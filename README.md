@@ -1,8 +1,5 @@
 🎯 SentimentAPI Backend - Spring Boot
 <div align="center">
-Mostrar imagen
-Mostrar imagen
-Mostrar imagen
 API REST Gateway para Sistema de Análisis de Sentimientos
 Proyecto desarrollado para Hackathon ONE - No Country
 </div>
@@ -90,4 +87,4 @@ Controller → Service → RestTemplate → Python API (ML Model)
 <div align="center">
 Desarrollado con ❤️ para Hackathon ONE
 🔗 Integrado con SentimentAPI Python/ML
-</div>Claude es IA y puede cometer errores. Por favor, verifica nuevamente las respuestas.
+</div>
