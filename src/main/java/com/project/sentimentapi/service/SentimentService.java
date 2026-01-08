@@ -6,6 +6,5 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Optional;
 
 public interface SentimentService  {
-     RestTemplate getRestemplate();
-     Optional<ResponseDto> consultaSentiment (String texto);
+      Optional<ResponseDto> consultarSentimiento(String texto);
 }

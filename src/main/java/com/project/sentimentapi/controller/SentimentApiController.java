@@ -30,7 +30,7 @@ public class SentimentApiController {
     public ResponseEntity<?> postMensaje(@NotBlank(message = "Se ha ingresado un mensaje vacio")
                                          @Size(min = 5, max = 500, message = "El texto ingresado debe contener 5 o 500 carácteres")
                                          @RequestBody(required = false) String texto) {
-        Optional<ResponseDto> responseDto = sentimentService.consultaSentiment(texto);
+        Optional<ResponseDto> responseDto = sentimentService.consultarSentimiento(texto);
         if (!responseDto.isEmpty()) {
             return ResponseEntity.ok(responseDto.get());
         } else {
