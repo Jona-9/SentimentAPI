@@ -42,6 +42,7 @@ public class SentimentServiceImplement implements SentimentService {
                     bodyValue(request).
                     retrieve().bodyToMono(String.class).block();
             SentimentsResponseDto responseDto = objectMapper.readValue(string, SentimentsResponseDto.class);
+
             return Optional.of(responseDto);
         } catch (WebClientRequestException e) {
             return Optional.empty();

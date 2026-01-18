@@ -35,8 +35,6 @@ public class UserServiceImplement implements UserService {
                     System.out.println("Ingreso Exitoso!");
                     return Optional.of(new UserDtoLogin(datos.getUsuarioID(), datos.getNombre(), datos.getApellido(), datos.getCorreo()));
                 }
-            } else {
-                return Optional.empty();
             }
         }
         return Optional.empty();
