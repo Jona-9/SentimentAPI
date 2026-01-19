@@ -21,7 +21,7 @@ public class UsuarioController {
     @PatchMapping("/login")
     public ResponseEntity<?> loginUsuario(@RequestBody UserDtoRegistro userDtoRegistro) {
         if (!userService.login(userDtoRegistro).isEmpty()) {
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(userService.login(userDtoRegistro));
         } else {
             return ResponseEntity.notFound().build();
         }
