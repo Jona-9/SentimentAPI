@@ -2005,3 +2005,11 @@ Analiza comentarios y los asocia a un producto. Actualiza automáticamente los c
 Authorization: Bearer {token}
 Content-Type: application/json
 ```
+📋 Actualizaciones Realizadas:
+✨ Nuevas Secciones:
+
+Gestión de Categorías - Endpoints completos para CRUD de categorías
+Gestión de Productos - Endpoints para crear y administrar productos
+Análisis con Productos - Múltiples formas de analizar comentarios asociados a productos
+Sistema de Eventos - Explicación del sistema automático de creación de categorías
+Endpoints de Debug - Utilidades para troubleshooting
