@@ -1,0 +1,141 @@
+OPCIONES DE DESPLIEGUE ONLINE — SentimentAPI
+=============================================
+Proyecto: Equipo No Data-No Code | Hackaton ONE - No Country
+Fecha: Febrero 2026
+
+El proyecto tiene 3 servicios + 1 base de datos:
+- Frontend (React 19 + Vite 7 + Tailwind 4)
+- Backend (Spring Boot 4.0.1 + Java 17)
+- ML Model (Python 3.12 + FastAPI + scikit-learn)
+- PostgreSQL 17
+
+
+OPCION 1: OCI — Oracle Cloud Infrastructure (RECOMENDADA)
+=========================================================
+Contexto: Alineado con el programa ONE (Oracle Next Education)
+
+Cuenta Trial: $300 USD de creditos por 30 dias + recursos Always Free permanentes.
+
+Recursos Always Free disponibles:
+- VM ARM Ampere A1: hasta 4 OCPUs + 24 GB RAM (divisible)
+- VM AMD x86: 2 instancias (1/8 OCPU, 1 GB RAM c/u) — muy limitadas
+- Object Storage: 10 GB
+- Load Balancer: 1 (10 Mbps)
+- Autonomous DB: 2 (20 GB c/u) — Oracle DB, NO PostgreSQL
+
+Arquitectura recomendada (1 VM ARM — Always Free, $0/mes):
+- 1 VM ARM A1 con 4 OCPUs y 24 GB RAM corriendo Ubuntu 22.04
+- PostgreSQL 17 instalado directamente (puerto 5432)
+- Backend Java 17 (puerto 8080)
+- ML FastAPI Python (puerto 8000)
+- Nginx como reverse proxy (puertos 80/443)
+  - / sirve frontend estatico
+  - /project/api/v2/* redirige al backend
+  - ML queda interno, solo accesible por backend
+- SSL gratuito con Let's Encrypt + Certbot
+
+Ventajas:
+- $0/mes permanente (Always Free, no expira)
+- 24 GB RAM es la oferta gratuita mas generosa del mercado
+- Coherente con el ecosistema Oracle/ONE
+- Sin trampas de facturacion
+
+Desventajas:
+- Configuracion manual del servidor (instalar todo via SSH)
+- Disponibilidad de VMs ARM puede ser limitada en algunas regiones
+- Always Free no tiene SLA de uptime garantizado
+
+
+OPCION 2: Railway
+=================
+- Frontend: Static site (gratis)
+- Backend: Java container (~$5/mes)
+- ML Model: Python container (~$5/mes)
+- PostgreSQL: Addon (~$5/mes)
+- Total: ~$15/mes
+
+Ventajas:
+- Despliegue directo desde GitHub (push → deploy automatico)
+- Sin configurar servidores
+- Dashboard intuitivo
+- SSL automatico
+
+Desventajas:
+- Costo mensual recurrente
+- Free tier muy limitado (500 horas/mes, se agota rapido con 3 servicios)
+
+
+OPCION 3: Render
+================
+- Frontend: Static site (gratis)
+- Backend: Web service (~$7/mes)
+- ML Model: Web service (~$7/mes)
+- PostgreSQL: Gratis 90 dias, luego ~$7/mes
+- Total: ~$14-21/mes
+
+Ventajas:
+- Despliegue desde GitHub
+- PostgreSQL gratis por 90 dias
+- SSL automatico
+
+Desventajas:
+- Free tier: servicios se "duermen" tras 15 min sin trafico (arranque lento)
+- Despues de 90 dias la BD se borra si no se paga
+
+
+OPCION 4: Fly.io
+================
+- Frontend: CDN (gratis)
+- Backend: Container (~$5/mes)
+- ML Model: Container (~$5/mes)
+- PostgreSQL: Volume (~$5/mes)
+- Total: ~$15/mes
+
+Ventajas:
+- Buen rendimiento, edge computing
+- CLI potente para despliegue
+
+Desventajas:
+- Curva de aprendizaje mas alta
+- Requiere tarjeta de credito para activar
+
+
+OPCION 5: VPS (DigitalOcean / Hetzner)
+=======================================
+- Todo en un solo VPS
+- DigitalOcean: $6-12/mes (1-2 GB RAM)
+- Hetzner: $4-7/mes (2-4 GB RAM, mejor relacion precio/rendimiento)
+
+Ventajas:
+- Control total del servidor
+- Hetzner es muy economico
+
+Desventajas:
+- Configuracion manual completa
+- RAM limitada para 3 servicios + BD en los planes baratos
+- Responsabilidad de backups y seguridad
+
+
+CAMBIOS NECESARIOS EN EL CODIGO (aplican a todas las opciones):
+===============================================================
+1. Backend application.properties: usar variables de entorno para BD y URL del ML
+2. Backend JwtUtil.java: mover JWT secret a variable de entorno
+3. Backend SecurityConfig.java: agregar dominio de produccion al CORS
+4. Backend: desactivar show-sql y include-stacktrace en produccion
+5. Frontend api.js: usar VITE_API_URL como variable de entorno en el build
+6. ML Model: restringir CORS allow_origins al dominio del backend
+
+Estos cambios son menores y se aplican sin afectar el funcionamiento local.
+
+
+RESUMEN COMPARATIVO:
+====================
+| Opcion           | Costo/mes | Dificultad | Permanencia | Alineacion ONE |
+|------------------|-----------|------------|-------------|----------------|
+| OCI Always Free  | $0        | Media      | Permanente  | Si             |
+| Railway          | ~$15      | Baja       | Mientras se pague | No        |
+| Render           | ~$14-21   | Baja       | BD expira 90 dias  | No       |
+| Fly.io           | ~$15      | Media      | Mientras se pague  | No       |
+| VPS Hetzner      | ~$4-7     | Alta       | Mientras se pague  | No       |
+
+Mi recomendacion: OCI Always Free (Opcion 1) por costo $0, recursos generosos y coherencia con Oracle/ONE.
