@@ -139,3 +139,91 @@ RESUMEN COMPARATIVO:
 | VPS Hetzner      | ~$4-7     | Alta       | Mientras se pague  | No       |
 
 Mi recomendacion: OCI Always Free (Opcion 1) por costo $0, recursos generosos y coherencia con Oracle/ONE.
+
+
+==========================================================================
+MEJORAS TECNICAS RECOMENDADAS
+==========================================================================
+
+ALTA PRIORIDAD (mejoran calidad profesional):
+---------------------------------------------
+
+1. Tests unitarios
+   El backend no tiene tests funcionales. Agregar tests para autenticacion,
+   analisis de sentimientos y sesiones. Da confianza al hacer cambios futuros.
+
+2. Documentacion de API (Swagger/OpenAPI)
+   Spring Boot 4 soporta SpringDoc. Con una dependencia y anotaciones minimas
+   se genera documentacion interactiva automatica en /swagger-ui.
+   Muy valorado en hackathons y por otros desarrolladores.
+
+3. Seguridad del JWT
+   El secret esta hardcodeado en JwtUtil.java. Moverlo a application.properties
+   o variable de entorno. Implementar refresh tokens para no forzar re-login
+   cada 24h.
+
+4. Paginacion
+   Los endpoints de historial, categorias y productos devuelven todo sin limite.
+   Con muchos datos se vuelve lento. Spring Data JPA ya soporta Pageable con
+   cambios minimos.
+
+5. Docker Compose
+   Un docker-compose.yml que levante los 3 servicios + PostgreSQL con un solo
+   comando. Cualquier persona puede correr el proyecto sin instalar Java,
+   Python ni PostgreSQL.
+
+
+MEDIA PRIORIDAD (mejoran experiencia de usuario):
+-------------------------------------------------
+
+6. Exportar resultados
+   Boton para descargar analisis como CSV o PDF desde el dashboard.
+   Los usuarios quieren llevar los datos a presentaciones o reportes.
+
+7. PWA (Progressive Web App)
+   Con Vite es facil (plugin vite-plugin-pwa). Permite instalar la app en el
+   celular y usarla offline con datos cacheados.
+
+8. Modo oscuro/claro
+   Ya tienen diseno oscuro. Agregar toggle para modo claro amplia accesibilidad.
+
+9. Notificaciones en tiempo real
+   WebSocket o SSE para notificar cuando un analisis batch largo termine.
+   Actualmente el usuario espera sin feedback si el CSV es grande.
+
+10. Admin panel
+    Vista para usuarios con rol ADMIN: ver todos los usuarios registrados,
+    estadisticas de uso, gestion de roles. El rol ADMIN ya existe en la BD
+    pero no se usa.
+
+
+BAJA PRIORIDAD (mejoran robustez tecnica):
+------------------------------------------
+
+11. Rate limiting
+    Proteger endpoints publicos (login, registro) contra fuerza bruta.
+    Spring Boot tiene soluciones con bucket4j o filtros personalizados.
+
+12. Cache
+    Cachear categorias y productos con @Cacheable de Spring. Son datos que
+    cambian poco y se consultan frecuentemente.
+
+13. CI/CD con GitHub Actions
+    Pipeline que al hacer push: compile, corra tests, y opcionalmente despliegue.
+    Archivo .github/workflows/ci.yml en cada repo.
+
+14. Mejorar modelo ML
+    El recall de Neutro es solo 27% (se confunde con Positivo/Negativo).
+    Explorar oversampling, embeddings o modelos mas potentes (transformers ligeros).
+
+15. Monitoreo
+    Spring Boot Actuator para health checks y metricas. Permite saber si el
+    servicio esta vivo y su estado de memoria/conexiones.
+
+
+MAYOR IMPACTO CON MENOR ESFUERZO:
+----------------------------------
+- Swagger/OpenAPI (~1 hora)
+- Docker Compose (~2 horas)
+- Exportar CSV desde dashboard (~2 horas)
+- Paginacion en historial (~1 hora)
