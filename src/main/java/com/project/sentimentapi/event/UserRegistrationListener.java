@@ -6,7 +6,6 @@ import com.project.sentimentapi.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class UserRegistrationListener {
     private CategoriaRepository categoriaRepository;
 
     @EventListener
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void handleUserRegistered(UserRegisteredEvent event) {
         User usuario = event.getUsuario();
 

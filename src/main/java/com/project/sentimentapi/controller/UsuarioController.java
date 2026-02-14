@@ -14,8 +14,13 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<?> registrarUsuario(@RequestBody UserDtoRegistro userDtoRegistro) {
-        userService.registrarUsuario(userDtoRegistro);
-        return ResponseEntity.ok().build();
+        try {
+            userService.registrarUsuario(userDtoRegistro);
+            return ResponseEntity.ok(java.util.Map.of("message", "Usuario registrado exitosamente"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.CONFLICT)
+                    .body(java.util.Map.of("message", e.getMessage()));
+        }
     }
 
     @PostMapping("/login")
